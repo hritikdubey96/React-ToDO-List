@@ -4,7 +4,8 @@ export default function TodoList(){
     let [todos,settodos] = useState([
         {
             id: uuidv4(),
-            task: "gym"
+            task: "gym",
+            isDone: false,
         }
     ]);
     let [newTodos,setnewTodos] = useState("");
@@ -15,7 +16,8 @@ export default function TodoList(){
                 ...prevVal,
                 {
                     id: uuidv4(),
-                    task: newTodos
+                    task: newTodos,
+                    isDone: false,
                 }
             ]  
         })
@@ -42,13 +44,13 @@ export default function TodoList(){
             })
         );
     };
-    let UpperCaseOne = (id) => {
+    let markDone = (id) => {
     settodos((prevTodos) =>
         prevTodos.map((todo) => {
             if (todo.id === id) {
                 return {
                     ...todo,
-                    task: todo.task.toUpperCase(),
+                    isDone: true,
                 };
             } else {
                 return todo;
@@ -74,7 +76,9 @@ export default function TodoList(){
                     {
                         todos.map((todo) => (
                             <li key={todo.id}>
-                                {todo.task}
+                                <span style={todo.isDone?{textDecorationLine: "line-through"}:{}}>
+                                    {todo.task}
+                                </span>
 
                                 <button
                                     onClick={() => deleteTodo(todo.id)}
@@ -82,9 +86,9 @@ export default function TodoList(){
                                     Delete
                                 </button>
                                 <button
-                                    onClick={() => UpperCaseOne(todo.id)}
+                                    onClick={() => markDone(todo.id)}
                                 >
-                                    UpperCase One
+                                    mark as done
                                 </button>
                             </li>
                         ))
